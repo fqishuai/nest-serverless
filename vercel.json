@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "nest-serverless",
   "builds": [
     {
       "src": "dist/main.js",
