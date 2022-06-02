@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { TransformInterceptor } from 'src/interceptor/transform.interceptor';
 
-@Controller('home')
+@Controller('user')
 @UseInterceptors(new TransformInterceptor()) // controller-scope的拦截器
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -14,7 +14,7 @@ export class UserController {
     return this.userService.auth(code);
   }
 
-  @Post()
+  @Post('create')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -35,7 +35,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.userService.delete(+id);
   }
 }

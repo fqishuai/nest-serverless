@@ -1,13 +1,19 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { Agent } from 'https';
-import { tap,map, lastValueFrom } from 'rxjs';
+import { Model } from 'mongoose';
+import { map, lastValueFrom } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class UserService {
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+  ) {}
 
   async auth(code: string) {
     console.log('code::', code) // https://github.com/login/oauth/authorize?client_id=82c071ef85f64b202923&redirect_uri=http://localhost:3000/home
@@ -39,23 +45,26 @@ export class UserService {
     );
     return mockJsonData;
   }
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const createdUser = await this.userModel.create(createUserDto);
+    return createdUser;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return this.userModel.findById({ _id: id }).exec();
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async delete(id: number) {
+    const deleteUser = await this.userModel.findOneAndDelete({ _id: id }).exec();
+    return deleteUser;
   }
 }
