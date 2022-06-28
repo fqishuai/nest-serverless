@@ -55,15 +55,23 @@ export class UserService {
     return this.userModel.find().exec();
   }
 
-  async findOne(id: number) {
+  async findOne(queryParam: unknown): Promise<User> {
+    return this.userModel.findOne(queryParam).exec();
+  }
+
+  async findById(id: string): Promise<User> {
     return this.userModel.findById({ _id: id }).exec();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return this.userModel.findByIdAndUpdate(id, updateUserDto).exec();
+  }
+  
+  async updateOne(updateUserDto: UpdateUserDto) {
+    return this.userModel.updateOne(updateUserDto).exec();
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const deleteUser = await this.userModel.findOneAndDelete({ _id: id }).exec();
     return deleteUser;
   }
