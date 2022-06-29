@@ -5,8 +5,6 @@ import { AppService } from './app.service';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TodoListService } from './todo-list/service/todo-list.service';
-import { TodoListController } from './todo-list/controller/todo-list.controller';
 import { TodoListModule } from './todo-list/module/todo-list.module';
 
 @Module({
@@ -15,14 +13,13 @@ import { TodoListModule } from './todo-list/module/todo-list.module';
     UserModule,
     TodoListModule,
   ],
-  controllers: [AppController, TodoListController],
+  controllers: [AppController],
   providers: [
     // { // 全局依赖注入拦截器TransformInterceptor
     //   provide: APP_INTERCEPTOR,
     //   useClass: TransformInterceptor,
     // },
     AppService,
-    TodoListService
   ],
 })
 export class AppModule {}
