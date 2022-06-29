@@ -5,19 +5,24 @@ import { AppService } from './app.service';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TodoListService } from './todo-list/service/todo-list.service';
+import { TodoListController } from './todo-list/controller/todo-list.controller';
+import { TodoListModule } from './todo-list/module/todo-list.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb+srv://admin:r6H5e4YZNmIV7TP7@cluster0.ghhxkbg.mongodb.net/?retryWrites=true&w=majority'),
     UserModule,
+    TodoListModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, TodoListController],
   providers: [
     // { // 全局依赖注入拦截器TransformInterceptor
     //   provide: APP_INTERCEPTOR,
     //   useClass: TransformInterceptor,
     // },
-    AppService
+    AppService,
+    TodoListService
   ],
 })
 export class AppModule {}
